@@ -6,17 +6,21 @@ const refs = {
     textAr: document.querySelector('textarea')
 };
 
+// Ликвидируем антипатерн
+
+const STORAGE_KEY = 'Feed-msg';
+
 populateTextArea()
 
 // Слушатели
 
 refs.form.addEventListener('submit', onFormSubmit);
-refs.textAr.addEventListener('input', onTextInput);
+refs.textAr.addEventListener('input', throttle(onTextInput, 1000));
 
 // Функция хранения input
 function onTextInput(event) {
     const messageEl = event.target.value;
-    localStorage.setItem('Feed-msg', messageEl);
+    localStorage.setItem(STORAGE_KEY, messageEl);
 }
 
 // Функция отправки формы
@@ -26,12 +30,12 @@ function onFormSubmit(event) {
     // Чистим форму after "submit"
     event.currentTarget.reset();
     // Чистим локалочку при нажатии САБМИТ
-    localStorage.removeItem('Feed-msg');
+    localStorage.removeItem(STORAGE_KEY);
 }
 
 // Делаем настроечку чтобы оставался текст в форме
 function populateTextArea() {
-    const savedMessage = localStorage.getItem('Feed-msg');
+    const savedMessage = localStorage.getItem(STORAGE_KEY);
     if (savedMessage) {
         refs.textAr.value = savedMessage;
     }

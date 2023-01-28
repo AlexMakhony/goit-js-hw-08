@@ -29,7 +29,7 @@ function onInputChange(e) {
 function submitForm(e) {
   e.preventDefault();
   form.reset();
-  localStorage.removeItem('feedback-form-state');
+  localStorage.removeItem('feedback-form-state', feedbackFormState);
 }
 
 // Ставим функцию автозаполнения

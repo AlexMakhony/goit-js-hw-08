@@ -26,14 +26,10 @@ function onInputChange(e) {
   );
 }
 
-// Ставим функцию на кнопку для обнуления формы и локалки
-function onFormSubmit(e) {
-    // Сбрасываем значения по умолчанию чтобы новая страница не открывалась
-    e.preventDefault();
-    // Чистим форму после отправки сообщения
-    e.currentTarget.reset();
-    // Чистим локалку после нажатия кнопки САБМИТ
-    localStorage.remove('feedback-form-state');
+function submitForm(e) {
+  e.preventDefault();
+  form.reset();
+  localStorage.removeItem('feedback-form-state');
 }
 
 // Ставим функцию автозаполнения

@@ -26,17 +26,17 @@ function onInputChange(e) {
   );
 }
 
+// Ставим функцию на чистку формы после нажатия сабмит
 function onFormSubmit(e) {
   e.preventDefault();
   e.currentTarget.reset();
-  localStorage.remove('feedback-form-state');
+  localStorage.removeItem('feedback-form-state');
 }
 
 // Ставим функцию автозаполнения
 function populateTextarea() {
   const savedMessage = JSON.parse(localStorage.getItem('feedback-form-state'));
   if (savedMessage) {
-    // console.log(savedMessage);
     emailEl.value = savedMessage['email'] || '';
     messageEl.value = savedMessage['message'] || '';
   }

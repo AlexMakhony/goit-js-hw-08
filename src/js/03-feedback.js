@@ -9,8 +9,10 @@ const messageEl = document.querySelector('textarea');
 // вещаем слушателей + тротл на импут
 form.addEventListener('input', throttle(onInputChange, 500));
 form.addEventListener('submit', onFormSubmit);
-const feedbackFormState = localStorage.getItem('feedback-form-state')
-  ? JSON.parse(localStorage.getItem('feedback-form-state'))
+// Боремся с антипатерн
+const STORAGE_KEY = 'feedback-form-state';
+const feedbackFormState = localStorage.getItem(STORAGE_KEY)
+  ? JSON.parse(localStorage.getItem(STORAGE_KEY))
   : {};
 
 // объявляем для сохранения заполнения
@@ -20,7 +22,7 @@ populateTextarea();
 function onInputChange(e) {
   feedbackFormState[e.target.name] = e.target.value;
   localStorage.setItem(
-    'feedback-form-state',
+    STORAGE_KEY,
     // обрабатыввем данные
     JSON.stringify(feedbackFormState)
   );
@@ -30,12 +32,12 @@ function onInputChange(e) {
 function onFormSubmit(e) {
   e.preventDefault();
   e.currentTarget.reset();
-  localStorage.removeItem('feedback-form-state');
+  localStorage.removeItem(STORAGE_KEY);
 }
 
 // Ставим функцию автозаполнения
 function populateTextarea() {
-  const savedMessage = JSON.parse(localStorage.getItem('feedback-form-state'));
+  const savedMessage = JSON.parse(localStorage.getItem(STORAGE_KEY));
   if (savedMessage) {
     emailEl.value = savedMessage['email'] || '';
     messageEl.value = savedMessage['message'] || '';

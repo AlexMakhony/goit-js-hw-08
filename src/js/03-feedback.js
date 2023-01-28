@@ -11,6 +11,7 @@ form.addEventListener('input', throttle(onInputChange, 500));
 form.addEventListener('submit', onFormSubmit);
 // Боремся с антипатерн
 const STORAGE_KEY = 'feedback-form-state';
+// Задаем условия в случае пустой формы
 const feedbackFormState = localStorage.getItem(STORAGE_KEY)
   ? JSON.parse(localStorage.getItem(STORAGE_KEY))
   : {};

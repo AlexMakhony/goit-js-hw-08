@@ -1,43 +1,53 @@
+// импортирует тротл
 import throttle from 'lodash.throttle';
-// Переменные
-const refs = {
-    form: document.querySelector('.feedback-form'),
-    mail: document.querySelector('input'),
-    textAr: document.querySelector('textarea')
-};
 
-// Ликвидируем антипатерн
+// находим необходимые элементы
+const form = document.querySelector('.feedback-form');
+const emailEl = document.querySelector('input');
+const messageEl = document.querySelector('textarea');
 
-const STORAGE_KEY = 'Feed-msg-2';
+// вещаем слушателей + тротл на импут
+form.addEventListener('input', throttle(onInputChange, 500));
+form.addEventListener('submit', onFormSubmit);
+const feedbackFormState = localStorage.getItem('feedback-form-state')
+  ? JSON.parse(localStorage.getItem('feedback-form-state'))
+  : {};
 
-populateTextArea()
+// объявляем для сохранения заполнения
+populateTextarea();
 
-// Слушатели
-
-refs.form.addEventListener('submit', onFormSubmit);
-refs.textAr.addEventListener('input', throttle(onTextInput, 1000));
-
-// Функция хранения input
-function onTextInput(event) {
-    const messageEl = event.target.value;
-    localStorage.setItem(STORAGE_KEY, messageEl);
+// Ставим функцию по отслеживанию заполнения + делаем сетайтем для хранения в локалке
+function onInputChange(e) {
+  feedbackFormState[e.target.name] = e.target.value;
+  localStorage.setItem(
+    'feedback-form-state',
+    // обрабатыввем данные
+    JSON.stringify(feedbackFormState)
+  );
 }
 
-// Функция отправки формы
-function onFormSubmit(event) {
-    // Ресет заводских настроек
-    event.preventDefault();
-    // Чистим форму after "submit"
-    event.currentTarget.reset();
-    // Чистим локалочку при нажатии САБМИТ
-    localStorage.removeItem(STORAGE_KEY);
+// Ставим функцию на кнопку для обнуления формы и локалки
+function onFormSubmit(e) {
+  e.preventDefault();
+  const form = e.currentTarget;
+  const feedbackFormState = new FormState(form);
+  const updateForm = {};
+  if (emailEl.value === '' || messageEl.value === '') {
+    alert('Please fill in the empty fields');
+    return;
+  }
+  updateForm[key] = value;
+  console.log(updateForm);
+  e.currentTarget.reset();
+  localStorage.removeItem('feedback-form-state');
 }
 
-// Делаем настроечку чтобы оставался текст в форме
-function populateTextArea() {
-    const savedMessage = localStorage.getItem(STORAGE_KEY);
-    if (savedMessage) {
-        refs.textAr.value = savedMessage;
-    }
-};
-
+// Ставим функцию автозаполнения
+function populateTextarea() {
+  const savedMessage = JSON.parse(localStorage.getItem('feedback-form-state'));
+  if (savedMessage) {
+    // console.log(savedMessage);
+    emailEl.value = savedMessage['email'] || '';
+    messageEl.value = savedMessage['message'] || '';
+  }
+}

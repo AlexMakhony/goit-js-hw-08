@@ -8,7 +8,7 @@ const refs = {
 
 // Ликвидируем антипатерн
 
-const STORAGE_KEY = 'Feed-msg';
+const STORAGE_KEY = 'Feed-msg-2';
 
 populateTextArea()
 

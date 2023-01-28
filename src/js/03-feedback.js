@@ -28,18 +28,12 @@ function onInputChange(e) {
 
 // Ставим функцию на кнопку для обнуления формы и локалки
 function onFormSubmit(e) {
-  e.preventDefault();
-  const form = e.currentTarget;
-  const feedbackFormState = new FormState(form);
-  const updateForm = {};
-  if (emailEl.value === '' || messageEl.value === '') {
-    alert('Please fill in the empty fields');
-    return;
-  }
-  updateForm[key] = value;
-  console.log(updateForm);
-  e.currentTarget.reset();
-  localStorage.removeItem('feedback-form-state');
+    // Сбрасываем значения по умолчанию чтобы новая страница не открывалась
+    e.preventDefault();
+    // Чистим форму после отправки сообщения
+    e.currentTarget.reset();
+    // Чистим локалку после нажатия кнопки САБМИТ
+    localStorage.remove('feedback-form-state');
 }
 
 // Ставим функцию автозаполнения

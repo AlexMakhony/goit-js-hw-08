@@ -26,10 +26,10 @@ function onInputChange(e) {
   );
 }
 
-function submitForm(e) {
+function onFormSubmit(e) {
   e.preventDefault();
-  form.reset();
-  localStorage.removeItem('feedback-form-state', feedbackFormState);
+  e.currentTarget.reset();
+  localStorage.remove('feedback-form-state');
 }
 
 // Ставим функцию автозаполнения

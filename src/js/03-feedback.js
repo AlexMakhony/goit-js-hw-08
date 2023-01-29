@@ -34,6 +34,10 @@ function onFormSubmit(e) {
   e.preventDefault();
   e.currentTarget.reset();
   localStorage.removeItem(STORAGE_KEY);
+  // Добавляем алерт
+  if (emailEl.value === "" || messageEl.value === "") {
+    return alert("Please fill in the empty fields");
+  }
 }
 
 // Ставим функцию автозаполнения
